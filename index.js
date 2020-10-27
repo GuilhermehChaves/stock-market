@@ -42,21 +42,26 @@ const fs = require('fs');
 
     await browser.close();
 
-    const header =
-        ["papel", "cotacao", "P/L", "P/VP", "PSR", "div.yield",
-            "P/ativo", "P/cap.giro", "P/EBIT", "P/ativ_circ.liq",
-            "EV/EBIT", "EV/EBITDA", "mrg_ebit", "mrg.Liq",
-            "liq.corr", "ROIC", "ROE", "liq.2meses", "patrim.liq",
-            "div.brut/patrim", "cresc.rec.5a"
-        ];
-    const table = data.toMatrix(21);
-    table.unshift(header);
+    // const header =
+    // ["papel", "cotacao", "P/L", "P/VP", "PSR", ".yieldivd",
+    //     "P/ativo", "P/cap.giro", "P/EBIT", "P/ativ_circ.liq",
+    //     "EV/EBIT", "EV/EBITDA", "mrg_ebit", "mrg.Liq",
+    //     "liq.corr", "ROIC", "ROE", "liq.2meses", "patrim.liq",
+    //     "div.brut/patrim", "cresc.rec.5a","data"
+    // ];
+
+    var table = data.toMatrix(21);
+    for(let i = 0; i < table.length; i++) {
+        const date = new Date();
+        // date.setDate(date.getDate() - 1);
+        table[i].push(date);
+    }
 
     var csv = table.map(function (d) {
         return JSON.stringify(d);
     });
 
-    csv = csv.join('\n').replace(/(^\[)|(\]$)/mg, '');
+    csv = csv.join('\n').replace(/(^\[)|(\]$)/mg, '') + '\n';
 
     fs.writeFile('data.csv', csv, { flag: "a+" }, function (err) {
         if (err) return console.log(err);
