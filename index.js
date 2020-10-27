@@ -14,13 +14,13 @@ const fs = require('fs');
     let browser = await puppeteer.launch({
         headless: false,
         defaultViewport: null,
-    })
+    });
 
     const page = await browser.newPage();
     await page.goto("https://fundamentus.com.br/resultado.php");
 
     const data = await page.evaluate(() => {
-        const tds = Array.from(document.querySelectorAll('table tr td'))
+        const tds = Array.from(document.querySelectorAll('table tr td'));
         return tds.map(td => {
             var divide = false;
 
@@ -52,15 +52,13 @@ const fs = require('fs');
     const table = data.toMatrix(21);
     table.unshift(header);
 
-    console.log(table[1]);
-
-    const csv = table.map(function (d) {
+    var csv = table.map(function (d) {
         return JSON.stringify(d);
-    })
-        .join('\n')
-        .replace(/(^\[)|(\]$)/mg, '');
+    });
 
-    fs.writeFile('data.csv', csv, function (err) {
+    csv = csv.join('\n').replace(/(^\[)|(\]$)/mg, '');
+
+    fs.writeFile('data.csv', csv, { flag: "a+" }, function (err) {
         if (err) return console.log(err);
         console.log("Done!!!");
     });
