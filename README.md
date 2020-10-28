@@ -29,7 +29,7 @@ O papel é o `código que identifica cada empresa seguido do tipo de ação`.
 
 **P/ativ_circ.liq** - O P/ativ_circ.liq é o `preço da ação dividido pelo Ativo Circulante Líquido por ação`.
 
-**EV/EBIT** - O `EV/EBIT` é o `valor da empresa dividido lelo lucro antes de impostos e taxas`.
+**EV/EBIT** - O `EV/EBIT` é o `valor da empresa dividido pelo lucro antes de impostos e taxas`.
 
 **EV/EBITDA** -  O `EV/EBITDA` é o `valor da empresa dividido pelo EBITDA`.
 
