@@ -3,5 +3,5 @@ const table = new Table();
 
 (async () => {
     await table.data();
-    table.save('test.csv');
+    table.save('data.csv');
 })();

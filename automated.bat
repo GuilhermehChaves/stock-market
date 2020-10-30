@@ -1,1 +1,1 @@
-node index.js && git add . && git commit -m "automated test" && git push
+node index.js && git add . && git commit -m "update data" && git push
