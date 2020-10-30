@@ -11,14 +11,14 @@ Array.prototype.toMatrix = function (width) {
 }
 
 class Table {
-    async data() {
+    async fromHtml(url) {
         let browser = await puppeteer.launch({
             headless: false,
             defaultViewport: null,
         });
 
         const page = await browser.newPage();
-        await page.goto("https://fundamentus.com.br/resultado.php");
+        await page.goto(url);
 
         const data = await page.evaluate(() => {
             const tds = Array.from(document.querySelectorAll('table tr td'));
