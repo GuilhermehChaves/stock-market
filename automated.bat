@@ -1,0 +1,1 @@
+node index.js && git add . && git commit -m "automated test" && git push
