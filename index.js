@@ -3,5 +3,5 @@ const table = new Table();
 
 (async () => {
     await table.fromHtml("https://fundamentus.com.br/resultado.php");
-    table.save('data.csv');
+    table.save('./data.csv');
 })();
