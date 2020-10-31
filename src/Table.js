@@ -11,9 +11,9 @@ Array.prototype.toMatrix = function (width) {
 }
 
 class Table {
-    async fromHtml(url) {
+    async fromHtml(url, visible) {
         let browser = await puppeteer.launch({
-            headless: false,
+            headless: !visible,
             defaultViewport: null,
         });
 
