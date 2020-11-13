@@ -12,50 +12,53 @@ Array.prototype.toMatrix = function (width) {
 
 class Table {
     async fromHtml(url, visible = false) {
-         
-        let browser = await puppeteer.launch({
-            headless: !visible,
-            defaultViewport: null,
-        });
+        try {
+            let browser = await puppeteer.launch({
+                headless: !visible,
+                defaultViewport: null,
+            });
 
-        const page = await browser.newPage();
-        await page.goto(url);
+            const page = await browser.newPage();
+            await page.goto(url);
 
-        const data = await page.evaluate(() => {
-            const tds = Array.from(document.querySelectorAll('table tr td'));
-            return tds.map(td => {
-                var divide = false;
+            const data = await page.evaluate(() => {
+                const tds = Array.from(document.querySelectorAll('table tr td'));
+                return tds.map(td => {
+                    var divide = false;
 
-                var value = td.innerText;
-                if (/[a-zA-Z]/g.test(value)) return value;
+                    var value = td.innerText;
+                    if (/[a-zA-Z]/g.test(value)) return value;
 
-                const percent = new RegExp("%", "g");
-                if (percent.test(value)) {
-                    value = value.replace(percent, "");
-                    divide = true;
-                };
+                    const percent = new RegExp("%", "g");
+                    if (percent.test(value)) {
+                        value = value.replace(percent, "");
+                        divide = true;
+                    };
 
-                value = value.replace(/\./g, "");
-                const pos = value.lastIndexOf(',');
-                const number = Number(value.substring(0, pos) + "." + value.substring(pos + 1));
-                return divide ? number / 100 : number; //Transforma o valor em % para decimal;
-            })
-        });
+                    value = value.replace(/\./g, "");
+                    const pos = value.lastIndexOf(',');
+                    const number = Number(value.substring(0, pos) + "." + value.substring(pos + 1));
+                    return divide ? number / 100 : number; //Transforma o valor em % para decimal;
+                })
+            });
 
-        await browser.close();
+            await browser.close();
 
-        var table = data.toMatrix(21);
-        for(let i = 0; i < table.length; i++) {
-            const date = new Date();
-            // date.setDate(date.getDate() - 1);
-            table[i].push(date);
+            var table = data.toMatrix(21);
+            for (let i = 0; i < table.length; i++) {
+                const date = new Date();
+                // date.setDate(date.getDate() - 1);
+                table[i].push(date);
+            }
+
+            this.csv = this.parse(table);
+            this.content = table;
+        } catch (e) {
+           return process.kill();
         }
-
-        this.csv = this.parse(table);
-        this.content = table;
     }
 
-    parse(content){
+    parse(content) {
         var csv = content.map(function (d) {
             return JSON.stringify(d);
         });
